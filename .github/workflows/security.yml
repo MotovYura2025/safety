@@ -1,0 +1,20 @@
+name: Security checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run SpotBugs
+        uses: spotbugs/spotbugs-action@v1
+        with:
+          path: . # или путь к вашему java проекту
+      - name: Run secret scan
+        run: git diff --cached | grep -q "AKIA[0-9A-Z]\{16\}" && echo "Error: AWS secrets" && exit 1 || echo "No secrets found"
+git add .github/workflows/security.yml
+git commit -m "Добавлен security workflow"
+git push
