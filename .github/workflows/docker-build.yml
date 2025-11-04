@@ -3,8 +3,8 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - main           # запуск при пуше в ветку main
-  workflow_dispatch:    # запуск вручную через интерфейс
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,7 +14,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: List files in repo
+      run: ls -l
+
+    - name: Show Dockerfile content
+      run: cat ./Dockerfile
+
     - name: Build Docker image
-      run: |
-        docker build -t my-image-name -f ./Dockerfile .
+      run: docker build -t my-image-name -f ./Dockerfile .
 
